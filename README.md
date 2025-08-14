@@ -11,13 +11,17 @@
 
 ## 1. Problema
 
-Se cuenta con listados de empresas (nombre y CIF), pero se carece de sus datos de contacto directo (emails corporativos, teléfonos, direcciones). Para establecer comunicación comercial, es necesario localizar y extraer automáticamente esta información desde sus sitios web oficiales u otras fuentes públicas disponibles en internet.
+Se cuenta con listados de empresas (nombre y CIF), pero se carece de sus datos de contacto directo 
+(emails corporativos, teléfonos, direcciones). Para establecer comunicación comercial, es necesario 
+localizar y extraer automáticamente esta información desde sus sitios web oficiales u otras fuentes 
+públicas disponibles en internet.
 
 ---
 
 ## 2. Solución Técnica
 
-Desarrollar un proceso de scraping web que permita obtener datos de contacto empresariales de forma automatizada a partir de los nombres de las empresas.
+Desarrollar un proceso de scraping web que permita obtener datos de contacto empresariales de forma 
+automatizada a partir de los nombres de las empresas.
 
 ---
 
@@ -68,31 +72,35 @@ _Pendiente de edición y subida._
 
 ## 7. Escalabilidad
 
-Para flujos masivos, se propone una versión asincrónica con `aiohttp` o `crawl4ai`, que mejora el rendimiento y permite scraping concurrente.
+Para flujos masivos, se propone una versión asincrónica con `aiohttp` o `crawl4ai`, que mejora el 
+rendimiento y permite scraping concurrente.
 
 ---
 
 ## 8. Comparativa de Métodos de Búsqueda de URLs Oficiales
 
-| Método                    | Gratuito | Límite        | Costo estimado | Ventajas                         | Desventajas                         |
-|---------------------------|----------|---------------|----------------|----------------------------------|-------------------------------------|
-| googlesearch (scraping)   | Sí       | No oficial    | $0             | Sin registro, ideal para pruebas | Bloqueos, resultados no estructurados |
-| SerpAPI                   | Sí (250) | Pago desde $50| ~$50           | JSON limpio, sin bloqueo         | Requiere API Key, coste mensual     |
-| Zenserp                   | Sí (50)  | Pago desde $29| ~$29           | Fácil de usar, resultados precisos| Menor volumen gratuito              |
-| Google Custom Search API  | Sí (100) | $5/1000       | ~$5            | Oficial, configurable            | Requiere configuración previa       |
-| Bing Search API           | Sí (1000)| Pago desde $3 | ~$3            | Económica, buena cobertura       | Menor precisión en empresas locales |
+| Método                    | Gratuito | Límite         | Costo estimado | Ventajas                            | Desventajas                           |
+|---------------------------|----------|----------------|----------------|-------------------------------------|---------------------------------------|
+| googlesearch (scraping)   | Sí       | No oficial     | $0             | Sin registro, ideal para pruebas    | Bloqueos, resultados no estructurados |
+| SerpAPI                   | Sí (250) | Pago desde $50 | ~$50           | JSON limpio, sin bloqueo            | Requiere API Key, coste mensual       |
+| Zenserp                   | Sí (50)  | Pago desde $29 | ~$29           | Fácil de usar, resultados precisos  | Menor volumen gratuito                |
+| Google Custom Search API  | Sí (100) | $5/1000        | ~$5            | Oficial, configurable               | Requiere configuración previa         |
+| Bing Search API           | Sí (1000)| Pago desde $3  | ~$3            | Económica, buena cobertura          | Menor precisión en empresas locales   |
 
 ---
 
 ## 9. Recomendación Final
 
-Para esta prueba técnica (50–100 empresas), se recomienda utilizar `googlesearch` por su simplicidad y coste cero. Para escalar el proceso, se sugiere evaluar APIs comerciales como `SerpAPI` y adoptar scraping asincrónico con `aiohttp` o `crawl4ai`.
+Para esta prueba técnica (50–100 empresas), se recomienda utilizar `googlesearch` por su simplicidad 
+y coste cero. Para escalar el proceso, se sugiere evaluar APIs comerciales como `SerpAPI` y adoptar 
+scraping asincrónico con `aiohttp` o `crawl4ai`.
 
 ---
 
 ## 10. Corrección Fonética y Semántica de Nombres Empresariales
 
-Objetivo: corregir nombres empresariales con validación fonética (`rapidfuzz`) y semántica (`unidecode`), asegurando trazabilidad y limpieza formal.
+Objetivo: corregir nombres empresariales con validación fonética (`rapidfuzz`) y semántica (`unidecode`), 
+asegurando trazabilidad y limpieza formal.
 
 ### Ejemplo de corrección fonética
 
@@ -114,26 +122,27 @@ print(normalizar_nombre(nombre_2))  # COMPANIA ABC SA
 
 ## 11. Flujo de Corrección y Validación
 
-Este módulo se encarga de limpiar, corregir y validar los nombres empresariales antes del scraping, asegurando trazabilidad y coherencia semántica.
+Este módulo se encarga de limpiar, corregir y validar los nombres empresariales antes del scraping,
+asegurando trazabilidad y coherencia semántica.
 
-| Archivo           | Propósito principal                                                  |
-|-------------------|----------------------------------------------------------------------|
+| Archivo           | Propósito principal                                                         |
+|-------------------|-----------------------------------------------------------------------------|
 | `normalizacion.py`| Funciones para limpiar y normalizar nombres (acentos, símbolos, mayúsculas) |
-| `correccion.py`   | Corrección fonética con `RapidFuzz` y validación semántica con `unidecode` |
-| `validacion.py`   | Detección de correcciones sospechosas y generación de revisión manual |
-| `main.py`         | Orquestación del flujo completo: carga, limpieza, corrección y exportación |
+| `correccion.py`   | Corrección fonética con `RapidFuzz` y validación semántica con `unidecode`  |
+| `validacion.py`   | Detección de correcciones sospechosas y generación de revisión manual       |
+| `main.py`         | Orquestación del flujo completo: carga, limpieza, corrección y exportación  |
 
 > Cada paso del flujo está documentado y modularizado, permitiendo auditoría, mejora continua y enseñanza técnica.
 
 ## 12. Archivos CSV y Logs Funcionales
 
-| Archivo CSV                              | Rol en el flujo                          | Contenido esperado                             | Sugerencias de mejora                                      |
-|------------------------------------------|------------------------------------------|------------------------------------------------|-------------------------------------------------------------|
+| Archivo CSV                                | Rol en el flujo                            | Contenido esperado                             | Sugerencias de mejora                              |
+|--------------------------------------------|--------------------------------------------|------------------------------------------------|----------------------------------------------------|
 | `empresas_limpias_corregidas_mejorado.csv` | Post-normalización y corrección automática | Nombres limpios + correcciones automáticas     | Agregar columna `ORIGEN_CORRECCIÓN` y `FECHA_PROCESO`       |
-| `revision_manual.csv`                    | Correcciones manuales aplicadas          | Casos límite revisados por uno mismo           | Agregar columna `OBSERVACIONES` y `VALIDACIÓN_MANUAL`       |
-| `correcciones_sospechosas.csv`           | Casos con ambigüedad o errores detectados| Correcciones dudosas, posibles sobreajustes    | Agregar columna `TIPO_ERROR` y `RECOMENDACIÓN`              |
-| `empresas_limpias_corregidas_final.csv`  | Resultado final validado                 | Nombres corregidos y validados                 | Agregar columna `VALIDACIÓN_FINAL` y `FUENTE_CORRECCIÓN`    |
-| `log_de_correcciones.csv`                | Registro trazable de cada corrección     | Entradas, salidas, tipo de corrección          | Ya bien estructurado, solo falta `ID` y `TIMESTAMP`         |
+| `revision_manual.csv`                      | Correcciones manuales aplicadas            | Casos límite revisados por uno mismo           | Agregar columna `OBSERVACIONES` y `VALIDACIÓN_MANUAL`   |
+| `correcciones_sospechosas.csv`             | Casos con ambigüedad o errores detectados  | Correcciones dudosas, posibles sobreajustes    | Agregar columna `TIPO_ERROR` y `RECOMENDACIÓN`                            |
+| `empresas_limpias_corregidas_final.csv`    | Resultado final validado                   | Nombres corregidos y validados                 | Agregar columna `VALIDACIÓN_FINAL` y `FUENTE_CORRECCIÓN`   |
+| `log_de_correcciones.csv`                  | Registro trazable de cada corrección       | Entradas, salidas, tipo de corrección          | Ya bien estructurado, solo falta `ID` y `TIMESTAMP`                       |
 
 ---
 
@@ -168,7 +177,9 @@ Este módulo se encarga de limpiar, corregir y validar los nombres empresariales
 
 ## 15. Reflexión Final
 
-Este ejercicio permitió identificar las limitaciones del scraping tradicional y la necesidad de modularizar el flujo. Se documentaron errores como evidencia de aprendizaje y se dejaron mejoras futuras para auditoría y enseñanza.
+Este ejercicio permitió identificar las limitaciones del scraping tradicional y la necesidad de
+modularizar el flujo. Se documentaron errores como evidencia de aprendizaje y se dejaron mejoras
+futuras para auditoría y enseñanza.
 
 ---
 
