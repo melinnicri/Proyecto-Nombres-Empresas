@@ -201,4 +201,28 @@ Este ejercicio permitió identificar las limitaciones del scraping tradicional y
 | `#bloqueo_scraping`       | El sitio detecta scraping y bloquea o redirige         | Cloudflare, captcha o redirección forzada           | Documentar como “requiere intervención manual”         |
 | `#errores_de_entorno`     | Problemas con librerías, rutas o entornos virtuales    | Conflictos entre kernels o rutas relativas          | Registrar en README y limpiar entornos obsoletos       |
 
+## Extra:
+scraping-contactos-empresariales/
+├── README.md                  # Informe técnico en formato Markdown
+├── requirements.txt           # Librerías necesarias para reproducir el entorno
+├── .gitignore                 # Exclusiones bien justificadas
+├── /src/                      # Scripts del flujo técnico
+│   ├── normalizacion.py
+│   ├── correccion.py
+│   ├── validacion.py
+│   └── main.py
+├── /data/                     # Archivos CSV de entrada y salida
+│   ├── empresas_originales.csv
+│   ├── empresas_limpias_corregidas_mejorado.csv
+│   ├── revision_manual.csv
+│   ├── correcciones_sospechosas.csv
+│   ├── empresas_limpias_corregidas_final.csv
+│   └── log_de_correcciones.csv
+├── /docs/                     # Documentación adicional y video explicativo
+│   ├── flujo_scraping.mp4
+│   └── cobertura_scraping.md
+├── /notebooks/                # Jupyter opcional para exploración y validación
+│   └── exploracion_contactos.ipynb
+└── /logs/                     # Logs funcionales por empresa
+    └── log_por_empresa.json
 
