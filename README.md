@@ -272,6 +272,8 @@ Proyecto-Nombres-Empresas/
 ```
 
 ---
+
+```
 ## Diagrama de flujo funcional del proyecto
 
 Inicio
@@ -296,3 +298,5 @@ Inicio
 📚 Documentación en README.md
   ↓
 Fin
+
+```
