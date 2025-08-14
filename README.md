@@ -7,6 +7,7 @@
 **Fecha de entrega:** 15 Agosto 2025  
 
 <p align="center"><img src="https://github.com/melinnicri/Proyecto-Nombres-Empresas/blob/main/image/scrapeo.png"></p>
+
 ---
 
 ## 1. Problema
@@ -137,6 +138,8 @@ asegurando trazabilidad y coherencia semántica.
 
 > Cada paso del flujo está documentado y modularizado, permitiendo auditoría, mejora continua y enseñanza técnica.
 
+---
+
 ## 12. Archivos CSV y Logs Funcionales
 
 | Archivo CSV                                | Rol en el flujo                            | Contenido esperado                             | Sugerencias de mejora                              |
@@ -156,6 +159,8 @@ asegurando trazabilidad y coherencia semántica.
 - **Con datos parciales:** 81  
 - **Sin datos encontrados:** 0  
 - **Costo estimado por empresa útil:** 1.89 horas  
+
+---
 
 ### Hallazgos clave
 
@@ -213,9 +218,11 @@ futuras para auditoría y enseñanza.
 | `#estructura_inconsistente`| HTML varía entre empresas, dificultando selectores únicos | Plantillas distintas o CMS personalizado         | Modularizar el scraping por tipo de estructura         |
 | `#bloqueo_scraping`       | El sitio detecta scraping y bloquea o redirige         | Cloudflare, captcha o redirección forzada           | Documentar como “requiere intervención manual”         |
 | `#errores_de_entorno`     | Problemas con librerías, rutas o entornos virtuales    | Conflictos entre kernels o rutas relativas          | Registrar en README y limpiar entornos obsoletos       |
----
+
 
 ```
+
+---
 
 ## Extra:
 scraping-contactos-empresariales/
@@ -243,3 +250,5 @@ scraping-contactos-empresariales/
     └── log_por_empresa.json
 
 ```
+
+---
