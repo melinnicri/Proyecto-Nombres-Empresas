@@ -222,7 +222,7 @@ futuras para auditoría y enseñanza.
 
 ---
 
-## Extra:
+## Extras:
 
 ---
 
