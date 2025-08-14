@@ -213,6 +213,9 @@ futuras para auditoría y enseñanza.
 | `#estructura_inconsistente`| HTML varía entre empresas, dificultando selectores únicos | Plantillas distintas o CMS personalizado         | Modularizar el scraping por tipo de estructura         |
 | `#bloqueo_scraping`       | El sitio detecta scraping y bloquea o redirige         | Cloudflare, captcha o redirección forzada           | Documentar como “requiere intervención manual”         |
 | `#errores_de_entorno`     | Problemas con librerías, rutas o entornos virtuales    | Conflictos entre kernels o rutas relativas          | Registrar en README y limpiar entornos obsoletos       |
+---
+
+```
 
 ## Extra:
 scraping-contactos-empresariales/
@@ -239,3 +242,4 @@ scraping-contactos-empresariales/
 └── /logs/                     # Logs funcionales por empresa
     └── log_por_empresa.json
 
+```
