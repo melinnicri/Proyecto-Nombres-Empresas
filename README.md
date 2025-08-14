@@ -119,6 +119,7 @@ nombre_2 = "Compania - ABC, SA"
 
 print(normalizar_nombre(nombre_1))  # COMPANIA ABC SA
 print(normalizar_nombre(nombre_2))  # COMPANIA ABC SA
+```
 
 ---
 
