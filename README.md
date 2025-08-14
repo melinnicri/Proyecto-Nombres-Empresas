@@ -80,6 +80,7 @@ rendimiento y permite scraping concurrente.
 
 ## 8. Comparativa de Métodos de Búsqueda de URLs Oficiales
 
+
 | Método                    | Gratuito | Límite         | Costo estimado | Ventajas                            | Desventajas                           |
 |---------------------------|----------|----------------|----------------|-------------------------------------|---------------------------------------|
 | googlesearch (scraping)   | Sí       | No oficial     | $0             | Sin registro, ideal para pruebas    | Bloqueos, resultados no estructurados |
