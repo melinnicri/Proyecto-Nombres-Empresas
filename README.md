@@ -6,8 +6,7 @@
 **Entorno de trabajo:** Python · Pandas · BeautifulSoup · Regex · CSV · Exploración reproducible  
 **Fecha de entrega:** 15 Agosto 2025  
 
-
-<p align="center"><img src="https://github.com/melinnicri/Proyecto-Nombres-Empresas/blob/main/images/Accidentes.jpg"></p>
+<p align="center"><img src="https://github.com/melinnicri/Proyecto-Nombres-Empresas/blob/main/image/scrapeo.png"></p>
 ---
 
 ## 1. Problema
