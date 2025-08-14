@@ -228,8 +228,7 @@ futuras para auditoría y enseñanza.
 
 ```
 
----
-
+# Diagrama del proyecto:
 Proyecto-Nombres-Empresas/
 ├── image/
 │   └── scrapeo/
