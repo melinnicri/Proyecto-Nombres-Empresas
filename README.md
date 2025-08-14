@@ -120,6 +120,8 @@ nombre_2 = "Compania - ABC, SA"
 print(normalizar_nombre(nombre_1))  # COMPANIA ABC SA
 print(normalizar_nombre(nombre_2))  # COMPANIA ABC SA
 
+---
+
 ## 11. Flujo de Corrección y Validación
 
 Este módulo se encarga de limpiar, corregir y validar los nombres empresariales antes del scraping,
