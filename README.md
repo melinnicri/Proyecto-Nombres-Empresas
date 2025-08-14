@@ -226,29 +226,46 @@ futuras para auditoría y enseñanza.
 ---
 
 ## Extra:
-scraping-contactos-empresariales/
-├── README.md                  # Informe técnico en formato Markdown
-├── requirements.txt           # Librerías necesarias para reproducir el entorno
-├── .gitignore                 # Exclusiones bien justificadas
-├── /src/                      # Scripts del flujo técnico
-│   ├── normalizacion.py
-│   ├── correccion.py
-│   ├── validacion.py
-│   └── main.py
-├── /data/                     # Archivos CSV de entrada y salida
-│   ├── empresas_originales.csv
-│   ├── empresas_limpias_corregidas_mejorado.csv
-│   ├── revision_manual.csv
-│   ├── correcciones_sospechosas.csv
-│   ├── empresas_limpias_corregidas_final.csv
-│   └── log_de_correcciones.csv
-├── /docs/                     # Documentación adicional y video explicativo
-│   ├── flujo_scraping.mp4
-│   └── cobertura_scraping.md
-├── /notebooks/                # Jupyter opcional para exploración y validación
-│   └── exploracion_contactos.ipynb
-└── /logs/                     # Logs funcionales por empresa
-    └── log_por_empresa.json
+
+Proyecto-Nombres-Empresas/
+├── image/
+│   └── scrapeo/
+├── mi_proyecto_escrapeo/
+│   ├── escrapeo/
+│   │   ├── data/                                                    # Archivos CSV de entrada y salida
+│   │   │   ├── processed/
+│   │   │   │   ├── contacto_empresas_es.csv
+│   │   │   │   └── empresas_completas.csv
+│   │   │   └── raw/
+│   │   │       └── comparados.csv
+│   │   ├── src/                                                      # Scripts del flujo técnico
+│   │   │   └── comparativa.ipynb
+│   │   ├── escrapeo_1.py
+│   │   └── requirements.txt                                          # Librerías necesarias para reproducir el entorno para escrapeo
+│   └── proyecto_correccion/
+│       ├── __pycache__/
+│       │   ├── correccion.cpython-312.pyc
+│       │   ├── normalizacion.cpython-312.pyc
+│       │   └── validacion.cpython-312.pyc
+│       ├── data/                                                      # Archivos CSV de entrada y salida
+│       │   ├── processed/
+│       │   │   ├── empresas_limpias_corregidas_final.csv
+│       │   │   └── empresas_limpias_corregidas_mejorado.csv
+│       │   └── raw/
+│       │       └── 100empresas.csv
+│       ├── logs/                                                       # Logs funcionales de la correción de los nombres de empresas
+│       │   ├── correcciones_sospechosas.csv
+│       │   ├── log_de_correcciones.csv
+│       │   └── revision_manual.csv
+│       ├── src/                                                        # Scripts del flujo técnico
+│       │   ├── modules/
+│       │   │   ├── correccion.py
+│       │   │   ├── normalizacion.py
+│       │   │   └── validacion.py
+│       │   └── main.py
+│       └── requirements.txt                                            # Librerías necesarias para reproducir el entorno para corrección
+├── README.md                                                           # Informe técnico en formato Markdown
+
 
 ```
 
