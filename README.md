@@ -272,3 +272,27 @@ Proyecto-Nombres-Empresas/
 ```
 
 ---
+## Diagrama de flujo funcional del proyecto
+
+Inicio
+  ↓
+📁 Carga de datos iniciales (100empresas.csv)
+  ↓
+🧹 Corrección fonética y semántica
+  ├─> correccion.py
+  ├─> normalizacion.py
+  └─> validacion.py
+  ↓
+📊 Generación de empresas_limpias_corregidas_final.csv
+  ↓
+📝 Registro de correcciones en logs/*.csv
+  ↓
+🌐 Scrapeo de nombres corregidos
+  ├─> escrapeo_1.py
+  └─> comparativa.ipynb
+  ↓
+📁 Almacenamiento en contacto_empresas_es.csv y empresas_completas.csv
+  ↓
+📚 Documentación en README.md
+  ↓
+Fin
