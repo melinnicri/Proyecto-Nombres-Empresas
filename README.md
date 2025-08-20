@@ -300,3 +300,51 @@ Inicio
 Fin
 
 ```
+---
+
+
+
+```
+## Diagrama de la carpeta "crawler" (escrapeo híbrido, asincrónico, con fallback dinámico y validadción semántica, realizado con Crawl4ai).
+
+crawler/
+├── __pycache__/                     # Archivos compilados automáticamente por Python
+│   ├── contact_extractor.cpython-313.pyc
+│   ├── correccion_crawler.cpython-313.pyc
+│   ├── diccionario_manual.cpython-313.pyc
+│   ├── gestor_correcciones.cpython-313.pyc
+│   ├── normalizacion_crawler.cpython-313.pyc
+│   ├── scraping_utils.cpython-313.pyc
+│   └── validacion_crawler.cpython-313.pyc
+
+├── data/                            # Ecosistema de datos
+│   ├── raw/                         # Datos originales sin procesar
+│   │   └── 100empresas.csv
+│   ├── processed/                   # Datos corregidos, validados y listos para análisis
+│   │   ├── contacto_empresas_es_2.csv*
+│   │   ├── correcciones_sospechosas.csv
+│   │   ├── diccionario_nombres_corregidos.csv
+│   │   ├── empresas_limpias_corregidas_final.csv
+│   │   ├── empresas_limpias_corregidas_mejorado.csv
+│   │   ├── nombres_normalizados_para_scraping.csv
+│   │   └── revision_manual.csv
+│   └── diccionario_manual.py        # Correcciones manuales y mapeos heurísticos
+
+├── logs/                            # Auditoría del proceso y scripts auxiliares
+│   ├── auditoria_texto_extraido.py
+│   ├── contact_extractor.py
+│   ├── gestor_correcciones.py
+│   ├── log_de_correcciones.csv
+│   ├── main_async.py
+│   └── scraping_utils.py
+
+├── src/                             # Código principal y módulos reutilizables
+│   ├── modules/                     # Funciones compartidas y componentes técnicos
+│   └── main.py                      # Script principal de ejecución
+
+├── compar2.ipynb                    # Notebook de comparación o análisis exploratorio
+├── escrapeo_dos.py                  # Script de scraping híbrido con fallback dinámico
+└── requirements.txt                 # Lista de dependencias del proyecto
+
+Resultado: extrae los urls con pocos errores, pero dirección, teléfono y email no los alcanza a extraer. En 36 segundos.
+```
