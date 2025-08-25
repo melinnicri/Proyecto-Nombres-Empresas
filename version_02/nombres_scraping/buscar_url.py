@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup                               # Análisis de docum
 warnings.filterwarnings("ignore", category=SyntaxWarning)   # Ignorar advertencias de sintaxis
 
 # ─── Configuración ──────────────────────────────────────────────────────────
-# Definición de los headers para las peticiones HTTP
+# Definición de los headers para las peticiones HTTP, simula visita a la página web
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
