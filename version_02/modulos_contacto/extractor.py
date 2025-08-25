@@ -1,21 +1,14 @@
 # extractor.py
 # Librerías del auxiliar
-import re
-import requests
-from bs4 import BeautifulSoup
+import re                           # para aplicar expresiones regulares (regex)
+from bs4 import BeautifulSoup       # para parsear y navegar el contenido HTML
 
 # Función de extracción de la información de contacto:
-# Aquí debes eliminar el espacio o tabulación al principio de la línea
-# Si la línea 52 es esta:
-#     Extracción de la información de contacto (dirección, teléfono, email desde una url dada)
-# Cámbiala por esta:
-# Extracción de la información de contacto (dirección, teléfono, email desde una url dada)
-
 def extraer_contacto(html_content):
     """
     Extracción de la información de contacto (dirección, teléfono, email desde una url dada)
     """
-    soup = BeautifulSoup(html_content, 'html.parser')
+    soup = BeautifulSoup(html_content, 'html.parser') # parseo del contenido html
 
     # Búsqueda en el pie de página y secciones de contacto
     posibles_secciones = soup.find_all(['footer', 'div', 'p', 'span'], class_=re.compile(r'contact|info|footer', re.I))

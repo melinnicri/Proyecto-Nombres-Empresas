@@ -7,7 +7,8 @@ from extractor import extraer_contacto
 from tqdm.asyncio import tqdm_asyncio
 import aiohttp
 
-# Constante para limitar las tareas concurrentes
+# Constante para limitar las tareas concurrentes, 
+# Limita el número de tareas simultáneas para evitar sobrecarga del sistema o bloqueo por parte de los servidores.
 MAX_CONCURRENCY = 5
 
 async def buscar_pagina_contacto(url_base):
@@ -71,6 +72,7 @@ async def procesar_url_con_semaforo(semaforo, page, row):
             }
         finally:
             await page.close()
+
 
 async def main():
     resultados = []
