@@ -348,3 +348,21 @@ crawler/
 
 Resultado: extrae los urls con pocos errores, pero dirección, teléfono y email no los alcanza a extraer. En 36 segundos.
 ```
+
+
+```
+Agregué otra versión mejorada del sistema asíncrona de scraping de información de empresas españolas: version_02
+Versión_02/
+├── nombres_scraping/                  # Punto de partida del proceso
+│   └── buscar_url.py                  # Sistema asincrónico que busca URLs
+│   └── urls.csv                       # Resultado exitoso (¡por fin!)
+│
+├── módulos_contacto/                 # Extracción y validación de contacto
+│   └── extractor.py                  # Auxiliar para extracción
+│   └── pipeline_contacto.py          # Pipeline principal
+│   └── contacto.csv                  # Resultado con datos de contacto
+│
+├── análisis/                         # Estadísticas y validaciones
+│   └── estadística.ipynb             # Notebook con análisis de urls y contacto
+├── requirements.txt                  # Requerimientos del entorno virtual para trabajarlo
+```
