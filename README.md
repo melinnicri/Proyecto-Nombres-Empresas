@@ -396,8 +396,8 @@ Impacto: evita saturación de recursos, permite scraping ético y deja evidencia
 
 # Comparación técnica entre los tres intentos de scraping:
 
-| Métrica / Criterio	Intento 1: Sincrónico + validación manual	| Intento 2: Asincrónico + CrawlerHub + fallback	| Intento 3: Asincrónico modular + Playwright |
-|---------------------------------------------------------------|-------------------------------------------------|---------------------------------------------|
+| Métrica | Criterio	Intento 1: Sincrónico + validación manual	| Intento 2: Asincrónico + CrawlerHub + fallback	| Intento 3: Asincrónico modular + Playwright |
+|---------|------------------------------------------------------|-------------------------------------------------|---------------------------------------------|
 | Empresas procesadas	| 100	| 100	| 100 |
 |URLs útiles encontradas (http)	| 78	| 95	| 100 ✅ |
 | Emails validados	| 36	| 44	| 54 ✅ |
