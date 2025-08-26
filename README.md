@@ -397,6 +397,7 @@ Impacto: evita saturación de recursos, permite scraping ético y deja evidencia
 # Comparación técnica entre los tres intentos de scraping:
 
 | Métrica / Criterio	Intento 1: Sincrónico + validación manual	| Intento 2: Asincrónico + CrawlerHub + fallback	| Intento 3: Asincrónico modular + Playwright |
+|---------------------------------------------------------------|-------------------------------------------------|---------------------------------------------|
 | Empresas procesadas	| 100	| 100	| 100 |
 |URLs útiles encontradas (http)	| 78	| 95	| 100 ✅ |
 | Emails validados	| 36	| 44	| 54 ✅ |
@@ -413,11 +414,11 @@ Impacto: evita saturación de recursos, permite scraping ético y deja evidencia
 ---
 # Conclusión basada en evidencia
 El tercer intento es el más completo y técnicamente sólido. Supera a los anteriores en:
-•	Cobertura de datos útiles
-•	Modularidad del pipeline
-•	Exportación reproducible
-•	Logging y trazabilidad
-•	Corrección fonética y validación semántica
+  •	Cobertura de datos útiles
+  •	Modularidad del pipeline
+  •	Exportación reproducible
+  •	Logging y trazabilidad
+  •	Corrección fonética y validación semántica
 
 Finalmente, la tabla anterior resume los tres intentos de scraping realizados, comparando métricas técnicas verificables. 
 El tercer intento, basado en un pipeline asincrónico modular con Playwright, presenta la mayor cobertura por campo, 
