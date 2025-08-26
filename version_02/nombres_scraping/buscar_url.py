@@ -9,6 +9,7 @@ from tqdm.asyncio import tqdm_asyncio                       # Barra de progreso 
 from bs4 import BeautifulSoup                               # Análisis de documentos HTML y XML
 
 warnings.filterwarnings("ignore", category=SyntaxWarning)   # Ignorar advertencias de sintaxis
+from tqdm import tqdm
 
 # ─── Configuración ──────────────────────────────────────────────────────────
 # Definición de los headers para las peticiones HTTP, simula visita a la página web
@@ -38,17 +39,26 @@ async def buscar_url_oficial_async(nombre_empresa, modo_estricto=False):
     loop = asyncio.get_event_loop()
     try:
         query = f"{nombre_empresa} sitio oficial empresa España"
-        # Limitar a 5 resultados para reducir tiempo de espera
         resultados = await loop.run_in_executor(None, lambda: list(search(query, num_results=5)))
 
         for url in resultados:
+            # Validación de URL sospechosa
+            if not url.startswith("http"):
+                print(f"[LOG] URL inválida para {nombre_empresa}: {url}")
+                continue
+
             # Filtrar dominios no deseados
-            if "google.com" not in url and "youtube.com" not in url:
-                if modo_estricto:
-                    if contiene_nombre_empresa(url, nombre_empresa):
-                        return url, "Validada por contenido"
+            if "google.com" in url or "youtube.com" in url or url.startswith("/search"):
+                continue
+
+            # Validación por contenido si modo_estricto está activado
+            if modo_estricto:
+                if contiene_nombre_empresa(url, nombre_empresa):
+                    return url, "Validada por contenido"
                 else:
-                    return url, "Dominio válido"
+                    continue  # Si no contiene el nombre, sigue buscando
+            else:
+                return url, "Dominio válido"
 
         return "No encontrada", "Sin resultados"
 
@@ -57,11 +67,21 @@ async def buscar_url_oficial_async(nombre_empresa, modo_estricto=False):
 
 # ─── Función principal para procesar el DataFrame CORREGIDA ──────────────────
 async def procesar_dataframe(df):
-    tasks = [buscar_url_oficial_async(row['CORREGIDO_FINAL']) for _, row in df.iterrows()]
-    resultados = await tqdm_asyncio.gather(*tasks, desc="Buscando URLs")
+    tareas = [
+        (i, buscar_url_oficial_async(row['CORREGIDO_FINAL'])) 
+        for i, row in df.iterrows()
+    ]
+
+    resultados = [None] * len(df)  # Prepara lista vacía con mismo largo
+
+    for i, coro in tqdm(tareas, desc="Buscando URLs"):
+        try:
+            resultado = await coro
+        except Exception as e:
+            resultado = ("Error: " + str(e), "Error en la búsqueda")
+        resultados[i] = resultado  # Asigna en la posición correcta
 
     df['URL_OFICIAL'], df['ESTADO'] = zip(*resultados)
-    
     return df
 
 # ─── Carga y validación del CSV ───────────────────────────────────────────────
@@ -76,10 +96,8 @@ if __name__ == "__main__":
         
         df_resultado = asyncio.run(procesar_dataframe(df))
         
-        # --- CAMBIO AQUÍ ---
         # El archivo de salida para este script será la entrada para el siguiente
         df_resultado.to_csv("urls.csv", index=False)
-        # --- FIN DEL CAMBIO ---
         
         print("✅ URLs oficiales guardadas en urls.csv")
     except FileNotFoundError:
