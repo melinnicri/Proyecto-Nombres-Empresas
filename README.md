@@ -222,7 +222,7 @@ futuras para auditoría y enseñanza.
 
 ---
 
-## Recapitación de los tres intentos de scraping: 26 de Agosto, 2025
+# Recapitación de los tres intentos de scraping: 26 de Agosto, 2025
 
 ## Primer intento: ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) Scraping sincrónico con validación manual; normalización, corrección, validación, main / escrapeo. 
  # Informe técnico – Corrección de nombres de empresas adjudicatarias
