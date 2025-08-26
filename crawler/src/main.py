@@ -1,98 +1,72 @@
-# main.py — Validación y corrección de nombres extraídos con Crawl4AI
-
+# Librerías:
 import pandas as pd
-import os
-
-# Crear carpeta logs si no existe
-os.makedirs("logs", exist_ok=True)
-
-# Confirmación opcional para auditoría
-if os.path.exists("logs"):
-    print("Carpeta 'logs/' disponible para escritura.")
-else:
-    raise Exception("No se pudo crear la carpeta 'logs/'.")
-
-# Corrección automática y por partes
-
-from correccion_crawler import (
-    crear_diccionario_mejorado,
+from normalizacion import normalizar_nombre
+from correccion import (
+    crear_diccionario_empresas,
     corregir_nombre_con_score,
     correccion_por_partes,
     pipeline_correccion
 )
-
-# Validación y revisión manual
-from validacion_crawler import (
+from validacion import (
+    generar_revision_manual,
     exportar_casos_sospechosos,
-    revisar_y_aplicar_correcciones_manual,
+    aplicar_correcciones_manual,
     generar_log_correcciones
 )
 
-# Diccionario manual con errores tipográficos conocidos
-from diccionario_manual import diccionario_manual, agregar_correccion
-
-# Corrección modular con trazabilidad
-from gestor_correcciones import (
-    cargar_diccionario_manual,
-    corregir_nombre,
-    guardar_diccionario
-)
-
-from normalizacion_crawler import normalizar_nombre as normalizar_basico  # si tienes esta función aparte
-
-# Actualizar diccionario manual con casos conocidos
-diccionario_manual.update({
-    "ASOCIACION FAMILAIRES ENFERMOS ALZHEIMER Y OTRAS DEMENCIAS DE LANZAROTE":
-    "ASOCIACION FAMILIARES ENFERMOS ALZHEIMER Y OTRAS DEMENCIAS DE LANZAROTE"
-    # Puedes agregar más casos aquí
-})
-
-# Pipeline principal con validación y corrección
 def ejecutar_pipeline(nombre_archivo_entrada="100empresas.csv"):
-    df_empresas = pd.read_csv(nombre_archivo_entrada, encoding="utf-8")
+    
+    # Cargar datos originales
+    try:
+        df_empresas = pd.read_csv(nombre_archivo_entrada, encoding="utf-8")
+        print(f"Archivo cargado: {nombre_archivo_entrada}")
+    except Exception as e:
+        print(f"Error al cargar archivo: {e}")
+        return
 
-    # Corrección automática con heurísticas
+    # Validar columna clave
+    if "ADJUDICATARIO" not in df_empresas.columns:
+        print("La columna 'ADJUDICATARIO' no está presente en el archivo.")
+        return
+
+    # Respaldo del original
+    df_empresas.to_csv("empresas_original.csv", index=False, encoding="utf-8-sig")
+
+    # Corrección automática
     df_corregido = pipeline_correccion(df_empresas, "ADJUDICATARIO")
     df_corregido.to_csv("empresas_limpias_corregidas_mejorado.csv", index=False, encoding="utf-8-sig")
     print("Corrección automática exportada.")
 
-
-    # Revisión manual y sugerencias
-    ejecutar_revision_manual(df_corregido, diccionario_manual)
+    # Revisión manual y casos sospechosos
+    generar_revision_manual(df_corregido)
     exportar_casos_sospechosos(df_corregido)
 
-# Revisión manual y aplicación de correcciones
-def ejecutar_revision_manual(df_original, diccionario_manual):
-    df_revision = df_original[df_original["STATUS_CORRECCIÓN"] == "Sin cambio"].copy()
-    df_revision["SUGERENCIA_MANUAL"] = df_revision["NOMBRE_LIMPIO"].apply(
-        lambda x: diccionario_manual.get(x, "")
-    )
-    df_revision.to_csv("revision_manual.csv", index=False, encoding="utf-8-sig")
-    print("Revisión manual exportada.")
-
-    df_corregido = revisar_y_aplicar_correcciones_manual(df_original, diccionario_manual)
+    # Aplicar correcciones manuales (si existen)
+    df_corregido = aplicar_correcciones_manual(df_corregido)
     df_corregido.to_csv("empresas_limpias_corregidas_final.csv", index=False, encoding="utf-8-sig")
     print("Corrección final con revisión manual exportada.")
 
+    # Log final de correcciones
     generar_log_correcciones(df_corregido)
     print("Log de correcciones generado.")
 
-# Corrección alternativa con gestor_correcciones (si quieres comparar)
-def ejecutar_pipeline_modular(nombre_archivo="datos_originales.csv"):
-    df = pd.read_csv(nombre_archivo, encoding="utf-8-sig")
-    diccionario = cargar_diccionario_manual("diccionario_manual.csv")
+    # Checklist final
+    print("\n Pipeline completado con éxito.")
+    print("Archivos generados:")
+    print("- empresas_original.csv")
+    print("- empresas_limpias_corregidas_mejorado.csv")
+    print("- revision_manual.csv")
+    print("- correcciones_sospechosas.csv")
+    print("- empresas_limpias_corregidas_final.csv")
+    print("- log_de_correcciones.csv")
 
-    df['NOMBRE_CORREGIDO'] = df['ADJUDICATARIO'].apply(
-        lambda x: corregir_nombre(x, diccionario, normalizar_nombre)  # ← AQUÍ VA
-    )
+# Para ver las correcciones en la DF (fueron 10 correcciones manuales)
+df_corregido = pd.read_csv("empresas_limpias_corregidas_final.csv", encoding="utf-8-sig")
 
-    df.to_csv("resultado_corregido.csv", index=False, encoding="utf-8-sig")
-    guardar_diccionario(diccionario)
-    print("Corrección modular exportada.")
+correcciones_automaticas = df_corregido[df_corregido["STATUS_CORRECCIÓN"] == "Corregido"]
+print(f"Correcciones automáticas aplicadas: {len(correcciones_automaticas)}")
 
 
-# Punto de entrada
+
 if __name__ == "__main__":
     ejecutar_pipeline()
-    # Si quieres ejecutar el otro flujo:
-    # ejecutar_pipeline_modular()
