@@ -222,179 +222,159 @@ futuras para auditoría y enseñanza.
 
 ---
 
-# Recapitación de los tres intentos de scraping: 26 de Agosto, 2025
+# Recapitación de los intentos de scraping: 
+**Fecha:** 26 de Agosto, 2025
 
-## Primer intento: ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) Scraping sincrónico con validación manual; normalización, corrección, validación, main / escrapeo. 
- # Informe técnico – Corrección de nombres de empresas adjudicatarias
-## Objetivo
-Normalizar, corregir y validar nombres de empresas adjudicatarias para asegurar consistencia semántica, trazabilidad y transferencia reproducible.
-
-## Módulos implementados
-
-### 1. `normalizar_nombre(nombre)`
-- Elimina paréntesis, acentos y símbolos.
-- Aplica sustituciones estándar (SAU, SLU, etc.).
-- Convierte a mayúsculas y limpia espacios.
-
-### 2. `corregir_nombre_con_score(nombre, diccionario)`
-- Usa RapidFuzz con `WRatio` y `token_set_ratio`.
-- Evalúa intersección de tokens y diferencia de longitud.
-- Devuelve el mejor match y su score.
-
-### 3. `correccion_por_partes(nombre, diccionario)`
-- Aplica corrección token por token si el score global es bajo.
-- Mejora precisión en nombres compuestos o ambiguos.
-
-### 4. `pipeline_correccion(df, columna_original)`
-- Aplica normalización, corrección y validación.
-- Genera columnas auxiliares: `MATCH_SCORE`, `STATUS_CORRECCIÓN`.
-
-### 5. `validacion.py`
-- Detecta casos dudosos (`MATCH_SCORE` entre 60 y 85).
-- Exporta correcciones sospechosas por heurística.
-- Aplica correcciones manuales desde `revision_manual.csv`.
-- Genera log final con tipo de corrección.
+## Primer intento: ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) 
+Scraping sincrónico con validación manual  
+Módulos: `normalización.py`, `corrección.py`, `validacion.py`, `main.py`, `escrapeo.py`
 
 ---
+### Objetivo  
+Normalizar, corregir y validar nombres de empresas adjudicatarias para asegurar:
+- Consistencia semántica  
+- Trazabilidad técnica  
+- Transferencia reproducible  
 
-## Resultados de la iteración
+### Módulos Implementados
 
-Empresa,CIF,URL,Dirección,Teléfono,Email
-ACCIONA,A95113361,https://www.acciona.com/es,Avenida de la Gran Vía de Hortaleza,2025-08-08 ,accionacorp@acciona.com
-ACEINSA MOVILIDAD SA,A84408954,https://aceinsa.es/web2/,Polígono Industrial Ventorro del Cano 28925 Alcorcón (Madrid) Teléfono: 91 495 95 90 Fax: 91 495 95 91 E-mai,91 495 95 90 ,aceinsa@aceinsa.es
-AGRUPACION EUROPEA DE INDUSTRIAS DE TRANSFORMACION SL,B83037606,https://www.iberinform.es/empresa/218653/agrupacion-europea-de-industrias-de-transformacion,No encontrada,83037606 ,atencionclientes@iberinform.es
+1. `normalizar_nombre(nombre)`  
+   - Elimina paréntesis, acentos y símbolos  
+   - Aplica sustituciones estándar (SAU, SLU, etc.)  
+   - Convierte a mayúsculas y limpia espacios  
 
-## Informe de Cobertura y Limitaciones del Scraping
-•	Empresas procesadas: 100
-•	Con datos completos: 19
-•	Con datos parciales: 81
-•	Sin datos encontrados: 0
-•	Costo estimado por empresa útil: 1.89 horas
+2. `corregir_nombre_con_score(nombre, diccionario)`  
+   - Usa RapidFuzz (`WRatio`, `token_set_ratio`)  
+   - Evalúa intersección de tokens y diferencia de longitud  
+   - Devuelve mejor match y score  
+
+3. `correccion_por_partes(nombre, diccionario)`  
+   - Corrige token por token si el score global es bajo  
+   - Mejora precisión en nombres compuestos o ambiguos  
+
+4. `pipeline_correccion(df, columna_original)`  
+   - Aplica normalización, corrección y validación  
+   - Genera columnas: `MATCH_SCORE`, `STATUS_CORRECCIÓN`  
+
+5. `validacion.py`  
+   - Detecta casos dudosos (`MATCH_SCORE` entre 60 y 85)  
+   - Exporta correcciones sospechosas por heurística  
+   - Aplica correcciones manuales desde `revision_manual.csv`  
+   - Genera log final con tipo de corrección  
+
+### Resultados de la Iteración
+
+| Empresa | CIF | URL | Dirección | Teléfono | Email |
+|--------|-----|-----|-----------|----------|-------|
+| ACCIONA | A95113361 | https://www.acciona.com/es | Avenida de la Gran Vía de Hortaleza | 2025-08-08 | accionacorp@acciona.com |
+| ACEINSA MOVILIDAD SA | A84408954 | https://aceinsa.es/web2/ | Polígono Industrial Ventorro del Cano, Alcorcón | 91 495 95 90 | aceinsa@aceinsa.es |
+| AGRUPACION EUROPEA DE INDUSTRIAS DE TRANSFORMACION SL | B83037606 | https://www.iberinform.es/... | No encontrada | 83037606 | atencionclientes@iberinform.es |
+
+### Informe de Cobertura
+
+- Empresas procesadas: **100**  
+- Con datos completos: **19**  
+- Con datos parciales: **81**  
+- Sin datos encontrados: **0**  
+- Costo estimado por empresa útil: **1.89 horas**
+
+### Casos Ambiguos Detectados
+
+- Correcciones sospechosas por longitud excesiva  
+- Tokens originales ausentes en el match  
+- Nombres genéricos como “SERVICIOS” o “GESTIÓN”
+
+### Aprendizajes
+
+- La corrección por partes mejora precisión en nombres compuestos  
+- El log por tipo de corrección permite auditoría ética  
+- La revisión manual es clave para casos con `MATCH_SCORE` intermedio
+
+### Próximos Pasos
+
+- Validación geográfica por sede o localidad  
+- Logs por empresa con evidencia de cada corrección  
+- Modularización del diccionario por sector o región  
 
 ---
-
-## Casos ambiguos detectados
-
-- Correcciones sospechosas por longitud excesiva.
-- Tokens originales no presentes en el match.
-- Empresas con nombres genéricos como “SERVICIOS” o “GESTIÓN”.
-
----
-
-
-## Aprendizajes
-
-- La corrección por partes mejora la precisión en nombres compuestos.
-- El log por tipo de corrección permite auditar el proceso éticamente.
-- La revisión manual es clave para casos con `MATCH_SCORE` intermedio.
-
----
-
-## Próximos pasos
-
-- Integrar validación geográfica por sede o localidad.
-- Dejar logs por empresa con evidencia de cada corrección.
-- Modularizar el diccionario por sector o región.
-
-
-
-
 ## Segundo intento: ["crawler"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/crawler)
-Scraping asincrónico con CrawlerHub y fallback; normalizacion_crawler.py, correccion_crawler.py, validacion_crawler.py, main.py, escrapeo_dos. Con un refinado sistema de corrección con una evolución técnica del pipeline. 
-Empresa,CIF,URL,Dirección,Teléfono,Email
-BOSTON SCIENTIFIC IBERICA SA,A80401821,https://www.bostonscientific.com/es-ES/home.html, Error, Error, Error
-BRENNTAG QUIMICA SAU,a59181537,https://www.brenntag.com/es-es/, Error, Error, Error
-CAIXABANK SA,A08663619,https://www.caixabank.es/particular/home/particulares_es.html, Error, Error, Error
-
-Diagnóstico técnico del segundo intento
-Lo que funcionó:
-•	✅ La búsqueda de URLs oficiales fue efectiva en la mayoría de los casos (se demoró mucho menos que el anterior, 6 min).
-•	✅ El scraping asincrónico con CrawlerHub y el fallback con playwright se activaron correctamente.
-•	✅ El logging por campo y por URL se generó como trazabilidad.
-Lo que no funcionó:
-•	❌ La extracción de dirección, teléfono y email falló en todos los casos.
-•	❌ Los patrones semánticos ("Dirección|Dónde estamos", etc.) no encontraron contenido útil.
-•	❌ El contenido HTML extraído (incluso con playwright) no contenía datos estructurados o accesibles. 
+Scraping asincrónico con CrawlerHub y fallback; 
+Módulos: `normalizacion_crawler.py`, `correccion_crawler.py`, `validacion_crawler.py`, `main.py`
 
 
+### Diagnóstico Técnico
+
+|Empresa|CIF|URL|Dirección|Teléfono|Email|
+|BOSTON SCIENTIFIC IBERICA SA|A80401821|https://www.bostonscientific.com/es-ES/home.html| Error| Error| Error|
+|BRENNTAG QUIMICA SAU|a59181537|https://www.brenntag.com/es-es/| Error| Error| Error|
+|CAIXABANK SA|A08663619|https://www.caixabank.es/particular/home/particulares_es.html| Error| Error| Error|
 
 
+#### Lo que funcionó:
+- Búsqueda de URLs oficiales efectiva (⏱️ 6 min)  
+- Scraping asincrónico activado correctamente  
+- Logging por campo y por URL generado
 
+#### Lo que no funcionó:
+- Extracción de dirección, teléfono y email fallida  
+- Patrones semánticos no encontraron contenido útil  
+- HTML extraído no contenía datos estructurados
 
-Resumen de Validación por Campo – Iteración 2025-08-26
-•	Categoría	•	Empresas	•	Descripción
-•	URL útil (http)	•	95	•	Empresas con URL accesible y estructurada
-•	Dirección validada (✓)	•	19	•	Dirección confirmada por heurística semántica
-•	Teléfono validado (✓)	•	53	•	Número extraído y validado
-•	Email validado (✓)	•	44	•	Correo electrónico extraído y validado
-•	Todos los campos validados (✓)	•	12	•	Dirección, teléfono y email confirmados
-•	Ningún campo validado (✗)	•	39	•	No se logró extraer ningún dato útil
-•	Solo dirección validada (✓), sin teléfono ni email	•	2	•	Casos con dirección confirmada pero sin contacto
-•	Dirección no validada (✗), con teléfono y email (✓)	•	26	•	Casos con contacto útil pero sin ubicación
-•	Solo teléfono validado (✓), sin dirección ni email	•	14	•	Casos con número pero sin otros datos
-•	Sin teléfono (✗), con dirección y email (✓)	•	4	•	Casos con ubicación y correo, pero sin número
-•	Solo email validado (✓), sin dirección ni teléfono	•	2	•	Casos con correo útil pero sin otros datos
-•	Sin email (✗), con dirección y teléfono (✓)	•	1	•	Casos con ubicación y número, pero sin correo
+### Validación por Campo – Iteración 2025-08-26
 
+| Categoría | Empresas | Descripción |
+|-----------|----------|-------------|
+| URL útil (http) | 95 | URL accesible y estructurada |
+| Dirección validada (✓) | 19 | Confirmada por heurística semántica |
+| Teléfono validado (✓) | 53 | Número extraído y validado |
+| Email validado (✓) | 44 | Correo electrónico extraído |
+| Todos los campos validados (✓) | 12 | Dirección, teléfono y email confirmados |
+| Ningún campo validado (✗) | 39 | Sin datos útiles |
+| Solo dirección (✓) | 2 | Sin teléfono ni email |
+| Dirección no validada (✗), con contacto (✓) | 26 | Teléfono y email sin ubicación |
+| Solo teléfono (✓) | 14 | Sin dirección ni email |
+| Sin teléfono (✗), con dirección y email (✓) | 4 | Sin número |
+| Solo email (✓) | 2 | Sin dirección ni teléfono |
+| Sin email (✗), con dirección y teléfono (✓) | 1 | Sin correo |
 
+---
 
+## Tercer Intento: ["scraper_final"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/version_02)
+Scraping asincrónico con Playwright refinado, validación semántica por campo y logging modular  
+Módulos: Versión_02/nombres_scraping: buscar_url.py, urls.csv; módulos_contacto: extractor.py, pipeline_contacto.py, contacto.csv; análisis: estadística.ipynb.
 
+### Objetivo  
+Extraer datos de contacto empresariales con máxima cobertura por campo, validación semántica y trazabilidad reproducible.  
+Se prioriza la auditoría por campo, el logging por empresa y la revisión manual de casos ambiguos (normalización y correción de los nombres se compartió desde el segundo intento).
 
-## Tercer intento: ["version_02"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/version_02)
-Escrapeo asincrónico. Pipeline modular con Playwright y validación semántica.
-Se realiza primero una normalización, corrección de los nombres de las empresas de la lista entregada. Y luego un escrapeo en módulos.
-Normalización y corrección de nombres empresariales
-Objetivo
-Asegurar que los nombres de empresas adjudicatarias estén estandarizados, corregidos fonéticamente y validados semánticamente antes de iniciar el scraping de contacto. Esto permite evitar ambigüedades, mejorar la precisión de búsqueda y facilitar la revisión manual.
-Etapas del proceso
-1. Normalización básica (normalizacion.py)
-•	Se eliminan paréntesis, acentos y símbolos no alfanuméricos.
-•	Se convierte todo a mayúsculas.
-•	Se aplican sustituciones estándar como:
-o	S.A.U. → SAU
-o	S.L. → SL
-o	LTDA, EIRL, COOP, etc.
-Ejemplo:
-python
-"Acciona Agua S.A.U." → "ACCIONA AGUA SAU"
-2. Corrección fonética (corrección.py)
-•	Se utiliza RapidFuzz con token_sort_ratio para encontrar el mejor match en un diccionario generado desde nombres únicos.
-•	Se evalúa el MATCH_SCORE para decidir si se acepta la corrección.
-Ejemplo:
-python
-"ACCIONA AGUA SAU" → "ACCIONA AGUA SAU" (score: 98)
-3. Corrección por partes (correccion_por_partes)
-•	Si el score es bajo, se corrige cada token individualmente.
-•	Esto mejora la cobertura en nombres compuestos o con errores tipográficos.
+### Mejoras Implementadas
 
-Ejemplo:
-python
-"ASOCIACION FAMILAIRES ENFERMOS ALZHEIMER" → "ASOCIACION FAMILIARES ENFERMOS ALZHEIMER"
-4. Aplicación de diccionario manual (revision_nombres_manual.py)
-•	Se integran overrides éticos para casos ambiguos o sensibles.
-•	El diccionario se versiona y se puede editar externamente.
-Ejemplo:
-python
-"ASOCIACION FAMILAIRES..." → corregido manualmente a "ASOCIACION FAMILIARES..."
-5. Exportación para revisión manual (revision_manual.csv)
-•	Se exportan los casos con MATCH_SCORE intermedio o sospechosos por heurística.
-•	Se deja espacio para corrección humana con sugerencias pre-cargadas.
-6. Log de correcciones (log_de_correcciones.csv)
-•	Se registra el tipo de corrección: automática, manual o sin cambio.
-•	Esto permite auditar el proceso y justificar cada decisión.
-### Resumen de correcciones (Iteración 2025-08-26)
-- Total de registros procesados: 100
-- Correcciones automáticas aplicadas: 0
-- Correcciones manuales aplicadas: 10
-- Casos sin modificación: 90
-- Archivos generados: empresas_limpias_corregidas_final.csv, log_de_correcciones.csv, revision_manual.csv
+- Scraping asincrónico con control de concurrencia (`asyncio.Semaphore`)  
+- Validación semántica por campo (`Dirección`, `Teléfono`, `Email`)  
+- Logging modular por empresa y por tipo de error  
+- Revisión manual integrada en el pipeline (`revision_manual.csv`)  
+- Exportación reproducible con trazabilidad por campo
 
+### Resultados de la Iteración
+Resultados en contacto.csv:
 
+|empresa|url|email|telefono|direccion|error|
+|PROYECTOS DE INGENIERIA EXTREMENOS SL|https://www.prodiex.com/|info@prodiex.com|924 303 647|No encontrado|
+|UNION PROTECCION CIVIL SL|http://unionproteccioncivil.es/contact|administracion@unionproteccioncivil.es|967 66 36|"Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga"|
+|BEY BAIZAN FRANCISCO JAVIER|https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf||||"Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf
+Call log:
+  - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf""| waiting until ""load""
+"|
 
+### Informe de Cobertura
+Datos de contacto extraídos:
 
-
-
-
+|Campo |Coincidencias |Porcentaje |
+|Dirección |6/100 |6.00% |
+|Teléfono	|69/100 |69.00% |
+|Email	|54/100	|54.00% |
+- Tiempo promedio por empresa útil: **1.12 horas**
+- 
 Se realizó:
 1. Pipeline asincrónico para búsqueda de URLs oficiales
 •	Usa googlesearch con validación semántica opcional (modo_estricto).
@@ -410,82 +390,6 @@ Impacto: permite extraer datos incluso en HTML desordenado, y filtra direcciones
 •	Extrae contenido HTML y lo pasa al extractor.
 •	Maneja errores como TimeoutError, TargetClosedError, y deja trazabilidad por empresa.
 Impacto: evita saturación de recursos, permite scraping ético y deja evidencia por cada intento.
-Estructura de carpetas
-Versión_02:
-├──100empresas.csv				# Entrada con nombres de empresas sin corregir
-│   └── normalización.py			# Aplicación de normalización
-│   └── corrección.py				# Aplicación de corrección
-│   └── main.py					# Ejecución de las aplicaciones anteriores (modular)
-│   └── corrección_manual.py			# Corrección manual de los nombres de las 
-    empresas
-├──empresas_limpias_corregidas_final.csv   # Salida con nombres corregidos
-│
-├──nombres_scraping.csv			# Entrada con nombres corregidos (cols 
-   seleccionadas)
-│   └──buscar_url.py				# Búsqueda de URLs oficiales
-├──urls.csv					# Salida con URLs oficiales
-│
-│   └──extractor.py				# Extracción de contacto desde HTML
-│   └──pipeline_contacto.py			# Scraping asincrónico con Playwright
-├──contacto.csv				# Salida con emails, teléfonos y direcciones
-│
-├──estadística.ipynb				# Estadística de los resultados
-├──requirements.txt				# Requerimientos del entorno virtual para 
-    trabajarlo
-
-buscar_url.py: El primer script que se ejecuta. Su trabajo es solo encontrar las URLs oficiales de las empresas.
-extractor.py: Este es un módulo auxiliar. No se ejecuta directamente. Contiene la lógica de extracción de datos (como la dirección, el teléfono y el correo electrónico) que el pipeline_contacto.py importa y utiliza.
-pipeline_contacto.py: El segundo script que se ejecuta. Lee el archivo urls.csv y utiliza el extractor.py para obtener la información de contacto de cada URL.
-datos de contacto. Finalmente, guarda toda la información en un archivo de salida llamado contacto.csv.
-Qué resuelven algunas librerías utilizadas en este escrapeo:
-•	Control de concurrencia con asyncio.Semaphore, evitando saturación de recursos.
-•	Scraping ético y robusto con Playwright, incluyendo manejo de errores específicos (TimeoutError, TargetClosedError).
-•	Barra de progreso clara con tqdm, incluso sobre asyncio.as_completed, lo que permite seguimiento granular.
-•	Exportación reproducible en contacto.csv, con campos estandarizados y trazabilidad por empresa.
-
-
-
-python buscar_url.py
-Iniciando pipeline de contacto...
-Extrayendo contactos: 100%|███████████████████████████████████████████████████████████████████████████████| 100/100 [03:31<00:00,  2.12s/it] 
-Pipeline finalizado. Revisa contacto.csv para resultados.
-Resultados en contacto.csv:
-empresa,url,email,telefono,direccion,error
-PROYECTOS DE INGENIERIA 
-EXTREMENOS SL,https://www.prodiex.com/,info@prodiex.com,924 303 647,No encontrado,
-UNION PROTECCION CIVIL SL,http://unionproteccioncivil.es/contact,administracion@unionproteccioncivil.es,967 66 36,"Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga",
-BEY BAIZAN FRANCISCO JAVIER,https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf,,,,"Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf
-Call log:
-  - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf"", waiting until ""load""
-"
-
-# Me encontré con un error gramatical "Navalez" en vez de "navales" XD
-
---- ANALIZANDO ESTADO DE LAS URLs ---
-Total de empresas procesadas: 100
-
-URLs correctas encontradas: 100 de 100
-Porcentaje de éxito en la búsqueda: 100.00%
-
-Desglose por estado de la búsqueda:
-ESTADO
-Dominio válido    100
-Name: count, dtype: int64
-
-==================================================
-
---- ANALIZANDO DATOS DE CONTACTO ---
-Estadísticas para la columna 'direccion':
-  - Cantidad de coincidencias: 6 de 100
-  - Porcentaje de coincidencia: 6.00%
-
-Estadísticas para la columna 'telefono':
-  - Cantidad de coincidencias: 69 de 100
-  - Porcentaje de coincidencia: 69.00%
-
-Estadísticas para la columna 'email':
-  - Cantidad de coincidencias: 54 de 100
-  - Porcentaje de coincidencia: 54.00%
 
 Comparación técnica entre los tres intentos de scraping:
 Métrica / Criterio	Intento 1: Sincrónico + validación manual	Intento 2: Asincrónico + CrawlerHub + fallback	Intento 3: Asincrónico modular + Playwright
@@ -502,16 +406,21 @@ Corrección fonética y por partes	Parcial	Mejorada	Completa + overrides manuale
 Manejo de errores documentado	Parcial	Parcial	Sí (ej. ERR_ABORTED) ✅
 Tiempo de ejecución	Alto (manual)	Bajo (6 min)	Medio (3.5 min)
 
-Conclusión basada en evidencia
+---
+# Conclusión basada en evidencia
 El tercer intento es el más completo y técnicamente sólido. Supera a los anteriores en:
 •	Cobertura de datos útiles
 •	Modularidad del pipeline
 •	Exportación reproducible
 •	Logging y trazabilidad
 •	Corrección fonética y validación semántica
-Finalmente, la tabla anterior resume los tres intentos de scraping realizados, comparando métricas técnicas verificables. El tercer intento, basado en un pipeline asincrónico modular con Playwright, presenta la mayor cobertura por campo, mejor trazabilidad y exportación reproducible. Aunque algunos valores no fueron calculados con precisión absoluta, la evidencia disponible permite concluir que esta versión es la más robusta y reproducible del proceso.
 
+Finalmente, la tabla anterior resume los tres intentos de scraping realizados, comparando métricas técnicas verificables. 
+El tercer intento, basado en un pipeline asincrónico modular con Playwright, presenta la mayor cobertura por campo, 
+mejor trazabilidad y exportación reproducible. Aunque algunos valores no fueron calculados con precisión absoluta, 
+la evidencia disponible permite concluir que esta versión es la más robusta y reproducible del proceso.
 
+---
 
 ## Extras:
 
