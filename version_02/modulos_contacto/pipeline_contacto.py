@@ -1,48 +1,50 @@
 # pipeline_contacto.py
-# Asincrónico con asyncio y Playwright
+# Scraping asincrónico con Playwright para extraer contacto desde URLs oficiales
+
 import asyncio
 import csv
-from playwright.async_api import async_playwright, TimeoutError
-from extractor import extraer_contacto
-from tqdm.asyncio import tqdm_asyncio
 import aiohttp
+from tqdm import tqdm
 
-# Constante para limitar las tareas concurrentes, 
-# Limita el número de tareas simultáneas para evitar sobrecarga del sistema o bloqueo por parte de los servidores.
-MAX_CONCURRENCY = 5
+# Manejo de errores específicos de Playwright
+from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
+from playwright._impl._errors import TargetClosedError
 
+# Función de extracción personalizada
+from extractor import extraer_contacto
+
+MAX_CONCURRENCY = 5  # Número máximo de tareas concurrentes
+
+# Buscar página de contacto dentro del sitio
 async def buscar_pagina_contacto(url_base):
-    """
-    Intenta encontrar una página de contacto en el mismo sitio web.
-    """
     posibles_urls = [
         f"{url_base.rstrip('/')}/contacto",
         f"{url_base.rstrip('/')}/contact",
         f"{url_base.rstrip('/')}/about-us",
         f"{url_base.rstrip('/')}/sobre-nosotros"
     ]
-    
-    # Aumenta el tiempo de espera para aiohttp
     timeout = aiohttp.ClientTimeout(total=15)
-    
     async with aiohttp.ClientSession(timeout=timeout) as session:
         for url_pagina in posibles_urls:
             try:
-                # Usa una petición HEAD para ser más rápido (solo pide los encabezados)
                 async with session.head(url_pagina, allow_redirects=True) as response:
                     if response.status == 200:
                         return url_pagina
             except aiohttp.ClientError:
                 continue
-    return url_base
+    return url_base  # Fallback si no se encuentra página específica
 
+# Procesar cada empresa con semáforo de concurrencia
 async def procesar_url_con_semaforo(semaforo, page, row):
     async with semaforo:
         url_principal = row.get("URL_OFICIAL")
         empresa = row.get("CORREGIDO_FINAL")
 
         if not url_principal or url_principal in ["No encontrada", "Error"]:
-            await page.close() # Asegúrate de cerrar la página aquí también
+            try:
+                await page.close()
+            except Exception:
+                pass
             return {
                 "empresa": empresa, "url": url_principal, "email": "", 
                 "telefono": "", "direccion": "", "error": "URL no válida"
@@ -65,41 +67,63 @@ async def procesar_url_con_semaforo(semaforo, page, row):
                 "empresa": empresa, "url": url_a_scrapear, "email": "", 
                 "telefono": "", "direccion": "", "error": "TimeoutError"
             }
+        except TargetClosedError:
+            return {
+                "empresa": empresa, "url": url_a_scrapear, "email": "", 
+                "telefono": "", "direccion": "", "error": "TargetClosedError"
+            }
         except Exception as e:
             return {
                 "empresa": empresa, "url": url_a_scrapear, "email": "", 
                 "telefono": "", "direccion": "", "error": str(e)
             }
         finally:
-            await page.close()
+            try:
+                await page.close()
+            except Exception:
+                pass
 
-
+# Función principal del pipeline
 async def main():
-    resultados = []
+    resultados_raw = []
     semaforo = asyncio.Semaphore(MAX_CONCURRENCY)
 
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        
-        with open("urls.csv", newline='', encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            
-            tareas = []
-            for row in reader:
-                page = await browser.new_page()
-                tareas.append(procesar_url_con_semaforo(semaforo, page, row))
-            
-            resultados = await tqdm_asyncio.gather(*tareas, desc="Extrayendo contactos")
-        
+
+        try:
+            with open("urls.csv", newline='', encoding="utf-8") as f:
+                reader = list(csv.DictReader(f))
+                tareas = []
+                for row in reader:
+                    page = await browser.new_page()
+                    tareas.append(procesar_url_con_semaforo(semaforo, page, row))
+
+                for coro in tqdm(asyncio.as_completed(tareas), total=len(tareas), desc="Extrayendo contactos"):
+                    try:
+                        resultado = await coro
+                    except Exception as e:
+                        resultado = {
+                            "empresa": "", "url": "", "email": "", 
+                            "telefono": "", "direccion": "", "error": str(e)
+                        }
+                    resultados_raw.append(resultado)
+
+        except FileNotFoundError:
+            print("No se encontró el archivo 'urls.csv'. Verifica la ruta.")
+            return
+
         await browser.close()
-    
+
+    # Guardar resultados
     with open("contacto.csv", "w", newline='', encoding="utf-8") as out:
         fieldnames = ["empresa", "url", "email", "telefono", "direccion", "error"]
         writer = csv.DictWriter(out, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(resultados)
-        
-    print("✅ Información de contacto guardada en 'contacto.csv'")
+        writer.writerows(resultados_raw)
 
+# Disparador de ejecución
 if __name__ == "__main__":
+    print("Iniciando pipeline de contacto...")
     asyncio.run(main())
+    print("Pipeline finalizado. Revisa contacto.csv para resultados.")
