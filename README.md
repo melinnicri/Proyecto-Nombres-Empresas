@@ -363,7 +363,7 @@ Resultados en contacto.csv:
 |---------|-----|-------|----------|-----------|-------| 
 | PROYECTOS DE INGENIERIA EXTREMENOS SL | https://www.prodiex.com/ | info@prodiex.com | 924 303 647 | No encontrado |
 | UNION PROTECCION CIVIL SL | http://unionproteccioncivil.es/contact | administracion@unionproteccioncivil.es | 967 66 36 | "Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga" |
-| BEY BAIZAN FRANCISCO JAVIER | https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf |||| "Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf Call log: - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf"" | waiting until ""load""" |
+| BEY BAIZAN FRANCISCO JAVIER | https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf |||| "Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf Call log: - navigating to "https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf" | waiting until "load" |
 
 ### Informe de Cobertura
 Datos de contacto extraídos:
@@ -378,18 +378,20 @@ Datos de contacto extraídos:
 
 Se realizó:
 1. Pipeline asincrónico para búsqueda de URLs oficiales
-•	Usa googlesearch con validación semántica opcional (modo_estricto).
-•	Filtra dominios irrelevantes y valida contenido si se requiere.
-•	Deja trazabilidad por empresa, estado y URL encontrada.
+  •	Usa googlesearch con validación semántica opcional (modo_estricto).
+  •	Filtra dominios irrelevantes y valida contenido si se requiere.
+  •	Deja trazabilidad por empresa, estado y URL encontrada.
 Impacto: evita falsos positivos y permite auditar cada resultado por tipo de validación.
+
 2. Extractor de contacto con BeautifulSoup y regex robusto
-•	Busca en secciones semánticas (footer, div, p, span) con clases tipo contact, info, footer.
-•	Aplica regex para email, teléfono y dirección con validación por localidad.
+  •	Busca en secciones semánticas (footer, div, p, span) con clases tipo contact, info, footer.
+  •	Aplica regex para email, teléfono y dirección con validación por localidad.
 Impacto: permite extraer datos incluso en HTML desordenado, y filtra direcciones por contexto geográfico.
+
 3. Scraper asincrónico con Playwright y semáforo de concurrencia
-•	Navega a posibles páginas de contacto (/contacto, /about-us, etc.).
-•	Extrae contenido HTML y lo pasa al extractor.
-•	Maneja errores como TimeoutError, TargetClosedError, y deja trazabilidad por empresa.
+  •	Navega a posibles páginas de contacto (/contacto, /about-us, etc.).
+  •	Extrae contenido HTML y lo pasa al extractor.
+  •	Maneja errores como TimeoutError, TargetClosedError, y deja trazabilidad por empresa.
 Impacto: evita saturación de recursos, permite scraping ético y deja evidencia por cada intento.
 
 # Comparación técnica entre los tres intentos de scraping:
