@@ -304,14 +304,15 @@ Módulos: `normalizacion_crawler.py`, `correccion_crawler.py`, `validacion_crawl
 
 ### Diagnóstico Técnico
 
-|Empresa|CIF|URL|Dirección|Teléfono|Email|
-|BOSTON SCIENTIFIC IBERICA SA|A80401821|https://www.bostonscientific.com/es-ES/home.html| Error| Error| Error|
-|BRENNTAG QUIMICA SAU|a59181537|https://www.brenntag.com/es-es/| Error| Error| Error|
-|CAIXABANK SA|A08663619|https://www.caixabank.es/particular/home/particulares_es.html| Error| Error| Error|
+| Empresa | CIF | URL | Dirección | Teléfono | Email |
+|---------|-----|-----|-----------|----------|-------|
+| BOSTON SCIENTIFIC IBERICA SA | A80401821 | https://www.bostonscientific.com/es-ES/home.html | Error | Error | Error |
+| BRENNTAG QUIMICA SAU | a59181537 | https://www.brenntag.com/es-es/ | Error | Error | Error |
+| CAIXABANK SA | A08663619 | https://www.caixabank.es/particular/home/particulares_es.html | Error | Error | Error |
 
 
 #### Lo que funcionó:
-- Búsqueda de URLs oficiales efectiva (⏱️ 6 min)  
+- Búsqueda de URLs oficiales efectiva (6 min)  
 - Scraping asincrónico activado correctamente  
 - Logging por campo y por URL generado
 
@@ -358,23 +359,28 @@ Se prioriza la auditoría por campo, el logging por empresa y la revisión manua
 ### Resultados de la Iteración
 Resultados en contacto.csv:
 
-|empresa|url|email|telefono|direccion|error|
-|PROYECTOS DE INGENIERIA EXTREMENOS SL|https://www.prodiex.com/|info@prodiex.com|924 303 647|No encontrado|
-|UNION PROTECCION CIVIL SL|http://unionproteccioncivil.es/contact|administracion@unionproteccioncivil.es|967 66 36|"Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga"|
-|BEY BAIZAN FRANCISCO JAVIER|https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf||||"Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf
+| empresa | url | email | telefono | direccion | error |
+|---------|-----|-------|----------|-----------|-------| 
+| PROYECTOS DE INGENIERIA EXTREMENOS SL | https://www.prodiex.com/ | info@prodiex.com | 924 303 647 | No encontrado |
+| UNION PROTECCION CIVIL SL | http://unionproteccioncivil.es/contact | administracion@unionproteccioncivil.es | 967 66 36 | 
+"Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga" |
+| BEY BAIZAN FRANCISCO JAVIER | https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf |||| 
+"Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf
 Call log:
-  - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf""| waiting until ""load""
-"|
+  - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf"" | waiting until ""load""
+" |
 
 ### Informe de Cobertura
 Datos de contacto extraídos:
 
-|Campo |Coincidencias |Porcentaje |
-|Dirección |6/100 |6.00% |
-|Teléfono	|69/100 |69.00% |
-|Email	|54/100	|54.00% |
+| Campo | Coincidencias | Porcentaje |
+|-------|---------------|------------|
+| Dirección | 6/100 | 6.00% |
+| Teléfono	| 69/100 | 69.00% |
+| Email	| 54/100	| 54.00% |
+
 - Tiempo promedio por empresa útil: **1.12 horas**
-- 
+
 Se realizó:
 1. Pipeline asincrónico para búsqueda de URLs oficiales
 •	Usa googlesearch con validación semántica opcional (modo_estricto).
@@ -391,20 +397,21 @@ Impacto: permite extraer datos incluso en HTML desordenado, y filtra direcciones
 •	Maneja errores como TimeoutError, TargetClosedError, y deja trazabilidad por empresa.
 Impacto: evita saturación de recursos, permite scraping ético y deja evidencia por cada intento.
 
-Comparación técnica entre los tres intentos de scraping:
-Métrica / Criterio	Intento 1: Sincrónico + validación manual	Intento 2: Asincrónico + CrawlerHub + fallback	Intento 3: Asincrónico modular + Playwright
-Empresas procesadas	100	100	100
-URLs útiles encontradas (http)	78	95	100 ✅
-Emails validados	36	44	54 ✅
-Teléfonos validados	41	53	69 ✅
-Direcciones validadas	12	19	6
-Empresas con todos los campos validados	19	12	…
-Empresas sin ningún dato útil	0	39	0
-Logging por campo	No	Parcial	Sí (por campo + por empresa) ✅
-Exportación reproducible (contacto.csv)	No	Parcial	Sí, con trazabilidad ✅
-Corrección fonética y por partes	Parcial	Mejorada	Completa + overrides manuales ✅
-Manejo de errores documentado	Parcial	Parcial	Sí (ej. ERR_ABORTED) ✅
-Tiempo de ejecución	Alto (manual)	Bajo (6 min)	Medio (3.5 min)
+# Comparación técnica entre los tres intentos de scraping:
+
+| Métrica / Criterio	Intento 1: Sincrónico + validación manual	| Intento 2: Asincrónico + CrawlerHub + fallback	| Intento 3: Asincrónico modular + Playwright |
+| Empresas procesadas	| 100	| 100	| 100 |
+|URLs útiles encontradas (http)	| 78	| 95	| 100 ✅ |
+| Emails validados	| 36	| 44	| 54 ✅ |
+| Teléfonos validados	| 41	| 53	| 69 ✅ |
+| Direcciones validadas	| 12	| 19	| 6 |
+| Empresas con todos los campos validados	| 19	| 12	| … |
+| Empresas sin ningún dato útil	| 0	| 39	| 0 |
+| Logging por campo	| No	| Parcial	| Sí (por campo + por empresa) ✅ |
+| Exportación reproducible (contacto.csv)	| No	| Parcial	| Sí, con trazabilidad ✅ |
+| Corrección fonética y por partes	| Parcial	| Mejorada	| Completa + overrides manuales ✅ |
+| Manejo de errores documentado	| Parcial	| Parcial	| Sí (ej. ERR_ABORTED) ✅ |
+| Tiempo de ejecución	| Alto (manual)	| Bajo (6 min)	| Medio (3.5 min) |
 
 ---
 # Conclusión basada en evidencia
@@ -429,7 +436,7 @@ la evidencia disponible permite concluir que esta versión es la más robusta y 
 ```
 
 # Diagrama del proyecto:
-Proyecto-Nombres-Empresas/
+Proyecto-Nombres-Empresas/mi_proyecto_escrapeo
 ├── image/
 │   └── scrapeo/
 ├── mi_proyecto_escrapeo/
