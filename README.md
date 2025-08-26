@@ -362,13 +362,8 @@ Resultados en contacto.csv:
 | empresa | url | email | telefono | direccion | error |
 |---------|-----|-------|----------|-----------|-------| 
 | PROYECTOS DE INGENIERIA EXTREMENOS SL | https://www.prodiex.com/ | info@prodiex.com | 924 303 647 | No encontrado |
-| UNION PROTECCION CIVIL SL | http://unionproteccioncivil.es/contact | administracion@unionproteccioncivil.es | 967 66 36 | 
-"Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga" |
-| BEY BAIZAN FRANCISCO JAVIER | https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf |||| 
-"Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf
-Call log:
-  - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf"" | waiting until ""load""
-" |
+| UNION PROTECCION CIVIL SL | http://unionproteccioncivil.es/contact | administracion@unionproteccioncivil.es | 967 66 36 | "Avenida Isabel la Católica 1c-d 02005 Albacete; Calle Velazquez, 8628001 Madrid; Carrer Gremi Fusters, 3307009 Palma; Calle Trinidad Grund, 2129001 Málaga" |
+| BEY BAIZAN FRANCISCO JAVIER | https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf |||| "Page.goto: net::ERR_ABORTED at https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf Call log: - navigating to ""https://www.boe.es/gazeta/dias/1905/07/14/pdfs/GMD-1905-195.pdf"" | waiting until ""load""" |
 
 ### Informe de Cobertura
 Datos de contacto extraídos:
