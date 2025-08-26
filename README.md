@@ -222,7 +222,7 @@ futuras para auditoría y enseñanza.
 
 ---
 
-# Recapitación de los intentos de scraping: 
+# Recapitulación de los intentos de scraping: 
 **Fecha:** 26 de Agosto, 2025
 
 ## Primer intento: ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) 
