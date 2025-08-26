@@ -222,9 +222,9 @@ futuras para auditoría y enseñanza.
 
 ---
 
-### Recapitación de los tres intentos de scraping:### 26 de Agosto, 2025
+## Recapitación de los tres intentos de scraping: 26 de Agosto, 2025
 
-## Primer intento:##  | ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) Scraping sincrónico con validación manual; normalización, corrección, validación, main / escrapeo. 
+## Primer intento: | ["mi_proyecto_escrapeo"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/mi_proyecto_escrapeo) Scraping sincrónico con validación manual; normalización, corrección, validación, main / escrapeo. 
  # Informe técnico – Corrección de nombres de empresas adjudicatarias
 ## Objetivo
 Normalizar, corregir y validar nombres de empresas adjudicatarias para asegurar consistencia semántica, trazabilidad y transferencia reproducible.
@@ -299,7 +299,7 @@ AGRUPACION EUROPEA DE INDUSTRIAS DE TRANSFORMACION SL,B83037606,https://www.iber
 
 
 
-## Segundo intento:##  | ["crawler"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/crawler)
+## Segundo intento: | ["crawler"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/crawler)
 Scraping asincrónico con CrawlerHub y fallback; normalizacion_crawler.py, correccion_crawler.py, validacion_crawler.py, main.py, escrapeo_dos. Con un refinado sistema de corrección con una evolución técnica del pipeline. 
 Empresa,CIF,URL,Dirección,Teléfono,Email
 BOSTON SCIENTIFIC IBERICA SA,A80401821,https://www.bostonscientific.com/es-ES/home.html, Error, Error, Error
@@ -340,7 +340,7 @@ Resumen de Validación por Campo – Iteración 2025-08-26
 
 
 
-## Tercer intento:##  | ["version_02"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/version_02)
+## Tercer intento:| ["version_02"](https://github.com/melinnicri/Proyecto-Nombres-Empresas/tree/main/version_02)
 Escrapeo asincrónico. Pipeline modular con Playwright y validación semántica.
 Se realiza primero una normalización, corrección de los nombres de las empresas de la lista entregada. Y luego un escrapeo en módulos.
 Normalización y corrección de nombres empresariales
