@@ -400,7 +400,7 @@ Impacto: evita saturación de recursos, permite scraping ético y deja evidencia
 | Métrica | Criterio	Intento 1: Sincrónico + validación manual	| Intento 2: Asincrónico + CrawlerHub + fallback	| Intento 3: Asincrónico modular + Playwright |
 |---------|------------------------------------------------------|-------------------------------------------------|---------------------------------------------|
 | Empresas procesadas	| 100	| 100	| 100 |
-|URLs útiles encontradas (http)	| 78	| 95	| 100 ✅ |
+|URLs útiles encontradas (http)	| 78	| 100 ✅	| 95 |
 | Emails validados	| 36	| 44	| 54 ✅ |
 | Teléfonos validados	| 41	| 53	| 69 ✅ |
 | Direcciones validadas	| 12	| 19	| 6 |
