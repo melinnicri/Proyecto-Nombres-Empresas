@@ -370,6 +370,7 @@ Datos de contacto extraídos:
 
 | Campo | Coincidencias | Porcentaje |
 |-------|---------------|------------|
+| url | 97/100 | 97.00% | 
 | Dirección | 6/100 | 6.00% |
 | Teléfono	| 69/100 | 69.00% |
 | Email	| 54/100	| 54.00% |
@@ -403,7 +404,7 @@ Impacto: evita saturación de recursos, permite scraping ético y deja evidencia
 | Emails validados	| 36	| 44	| 54 ✅ |
 | Teléfonos validados	| 41	| 53	| 69 ✅ |
 | Direcciones validadas	| 12	| 19	| 6 |
-| Empresas con todos los campos validados	| 19	| 12	| … |
+| Empresas con todos los campos validados	| 19	| 12	| 6 |
 | Empresas sin ningún dato útil	| 0	| 39	| 0 |
 | Logging por campo	| No	| Parcial	| Sí (por campo + por empresa) ✅ |
 | Exportación reproducible (contacto.csv)	| No	| Parcial	| Sí, con trazabilidad ✅ |
