@@ -504,6 +504,8 @@ Inicio
   ↓
 Fin
 
+* Este scraping se demoró 6 min
+
 ```
 ---
 
@@ -570,4 +572,7 @@ Versión_02/
 ├── análisis/                         # Estadísticas y validaciones
 │   └── estadística.ipynb             # Notebook con análisis de urls y contacto
 ├── requirements.txt                  # Requerimientos del entorno virtual para trabajarlo
+
+* Este scraping se demoró 3.5 min
+
 ```
